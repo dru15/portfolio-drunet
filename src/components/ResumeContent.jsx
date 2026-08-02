@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   ArrowRight, Send, MapPin, Mail, Phone, Code2, Link2, ExternalLink, Sparkles,
 } from 'lucide-react';
