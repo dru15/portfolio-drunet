@@ -7,6 +7,7 @@ import JediMode from './components/JediMode';
 import { getMuteState, playSound } from './utils/audio';
 import MouseBacklight from './components/MouseBacklight';
 import LoadingScreen from './components/LoadingScreen';
+import MobilePortfolio from './components/MobilePortfolio';
 
 export const SECTIONS = [
   { id: 'home',       label: '00 · Home' },
@@ -242,6 +243,14 @@ export default function App() {
         isZooming={false}
         theme={theme}
         onSplineLoad={() => setSplineLoaded(true)}
+      />
+
+      <MobilePortfolio
+        theme={theme}
+        onToggleTheme={(cx, cy) => toggleTheme(cx || window.innerWidth / 2, cy || 50)}
+        isMuted={isMuted}
+        setIsMuted={setIsMuted}
+        onOpenAI={() => setAiOpen(true)}
       />
 
       <div className="ui-layer">

@@ -2026,6 +2026,619 @@ h1, h2, h3, h4 { font-family: 'Outfit', 'Sora', sans-serif; }
     background: radial-gradient(circle, rgba(80,70,160,0.09) 0%, rgba(0,102,153,0.05) 50%, transparent 75%);
   }
 }
+
+/* ============================================================
+   NEW DEDICATED MOBILE PORTFOLIO STYLES (≤768px)
+   ============================================================ */
+@media (max-width: 768px) {
+  /* Hide desktop UI layer on mobile */
+  .ui-layer,
+  .hud-nav-container,
+  .hud-sidebar,
+  .mobile-bottom-nav,
+  .jedi-fab {
+    display: none !important;
+  }
+
+  .mobile-app-root {
+    position: relative;
+    z-index: 50;
+    min-height: 100vh;
+    padding-top: 56px;
+    padding-bottom: 90px;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* Fixed Header */
+  .mobile-header-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    height: 56px;
+    background: rgba(4, 6, 8, 0.88);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+  }
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text);
+  }
+
+  .mobile-brand-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--vision-green);
+    box-shadow: 0 0 10px var(--vision-green);
+    animation: statusPulse 2s ease-in-out infinite;
+  }
+
+  .mobile-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mobile-icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .mobile-icon-btn:active {
+    transform: scale(0.92);
+    background: rgba(0, 255, 136, 0.15);
+    color: var(--vision-green);
+  }
+
+  /* Sticky Category Selector */
+  .mobile-category-bar {
+    position: sticky;
+    top: 56px;
+    z-index: 990;
+    background: rgba(4, 6, 8, 0.94);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .mobile-category-bar::-webkit-scrollbar { display: none; }
+
+  .mobile-cat-chip {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-2);
+    white-space: nowrap;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: all 0.25s var(--ease-smooth);
+  }
+
+  .mobile-cat-chip.active {
+    background: rgba(0, 255, 136, 0.15);
+    border-color: var(--vision-green);
+    color: var(--vision-green);
+    box-shadow: 0 0 14px rgba(0, 255, 136, 0.25);
+  }
+
+  /* Feed Container & Cards */
+  .mobile-feed-container {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .mobile-card {
+    background: var(--panel-bg-solid);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 22px;
+    padding: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 136, 0.04);
+  }
+
+  .mobile-hero-card {
+    background: linear-gradient(145deg, rgba(10, 12, 25, 0.95), rgba(15, 22, 40, 0.95));
+    border-color: rgba(0, 255, 136, 0.3);
+    padding: 24px 20px;
+  }
+
+  .mobile-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border-radius: 14px;
+    background: rgba(0, 255, 136, 0.08);
+    border: 1px solid rgba(0, 255, 136, 0.25);
+    color: var(--vision-green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .mobile-hero-name {
+    font-family: 'Outfit', 'Sora', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .mobile-hero-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .mobile-hero-tagline {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-2);
+    margin-bottom: 16px;
+  }
+
+  .mobile-stats-pills {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .mobile-stat-pill {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .mobile-stat-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    color: var(--text-3);
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-stat-val {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .mobile-hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobile-btn {
+    width: 100%;
+    height: 44px;
+    border-radius: 14px;
+    font-family: 'Outfit', 'Inter', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.25s var(--ease-smooth);
+    border: none;
+  }
+
+  .mobile-btn-primary {
+    background: var(--accent);
+    color: #040608;
+    box-shadow: 0 4px 18px rgba(0, 255, 136, 0.3);
+  }
+  .mobile-btn-primary:active {
+    transform: scale(0.98);
+  }
+
+  .mobile-btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  /* Card Section Headers */
+  .mobile-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-sec-icon {
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .mobile-sec-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text-3);
+    letter-spacing: 0.1em;
+    display: block;
+  }
+
+  .mobile-sec-title {
+    font-family: 'Outfit', 'Sora', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .mobile-body-text {
+    font-size: 0.84rem;
+    line-height: 1.65;
+    color: var(--text-2);
+    margin-bottom: 16px;
+  }
+
+  .mobile-sub-heading {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 14px 0 10px;
+  }
+
+  /* Education */
+  .mobile-edu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobile-edu-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 14px;
+  }
+
+  .mobile-edu-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .mobile-edu-degree {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .mobile-edu-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    color: var(--accent);
+    background: rgba(0, 255, 136, 0.1);
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  .mobile-edu-inst {
+    font-size: 0.78rem;
+    color: var(--text-2);
+    margin-bottom: 4px;
+  }
+
+  .mobile-edu-detail {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent-2);
+    font-weight: 600;
+  }
+
+  /* Skill Meters */
+  .mobile-skill-meters {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobile-skill-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-skill-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    font-weight: 600;
+  }
+
+  .mobile-skill-name { color: var(--text); }
+  .mobile-skill-pct { font-family: 'JetBrains Mono', monospace; color: var(--accent); }
+
+  .mobile-skill-track {
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  .mobile-skill-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 3px;
+  }
+
+  .mobile-tags-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .mobile-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: rgba(0, 255, 136, 0.06);
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    color: var(--accent);
+  }
+
+  .mobile-chip-sensor {
+    background: rgba(0, 212, 255, 0.06);
+    border-color: rgba(0, 212, 255, 0.2);
+    color: var(--accent-2);
+  }
+
+  /* Projects */
+  .mobile-projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .mobile-proj-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .mobile-proj-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--accent-2);
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+  }
+
+  .mobile-proj-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .mobile-proj-desc {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--text-2);
+    margin-bottom: 12px;
+  }
+
+  /* Experience Timeline */
+  .mobile-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    border-left: 2px solid var(--border);
+    padding-left: 16px;
+    margin-left: 6px;
+  }
+
+  .mobile-timeline-item {
+    position: relative;
+  }
+
+  .mobile-tl-dot {
+    position: absolute;
+    left: -21px;
+    top: 4px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--vision-green);
+    box-shadow: 0 0 10px var(--vision-green);
+  }
+
+  .mobile-tl-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+
+  .mobile-tl-role {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .mobile-tl-company {
+    font-size: 0.78rem;
+    color: var(--text-2);
+    margin-bottom: 8px;
+  }
+
+  .mobile-tl-bullets {
+    padding-left: 16px;
+    margin: 0;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--text-2);
+  }
+
+  .mobile-tl-bullets li {
+    margin-bottom: 4px;
+  }
+
+  /* Contact Links & Form */
+  .mobile-contact-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-contact-pill {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 0.76rem;
+    font-family: 'JetBrains Mono', monospace;
+    transition: all 0.2s ease;
+  }
+  .mobile-contact-pill:active {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: var(--accent);
+  }
+
+  .mobile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .mobile-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .mobile-input-group label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-input-group input,
+  .mobile-input-group textarea {
+    background: rgba(0, 255, 136, 0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'Outfit', 'Inter', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+  }
+
+  .mobile-input-group input:focus,
+  .mobile-input-group textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.1);
+  }
+
+  .mobile-form-success {
+    text-align: center;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mobile-footer {
+    text-align: center;
+    padding: 20px 0 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-3);
+  }
+
+  /* Floating AI Oracle Fab */
+  .mobile-ai-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 16px;
+    z-index: 1000;
+    height: 44px;
+    padding: 0 16px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--purple), #00D4FF);
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(108, 99, 255, 0.4);
+    cursor: pointer;
+  }
+  .mobile-ai-fab:active {
+    transform: scale(0.94);
+  }
+}
+
 .backlight-layer {
   position: fixed;
   top: 0;
