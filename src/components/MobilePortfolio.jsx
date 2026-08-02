@@ -440,12 +440,6 @@ export default function MobilePortfolio({ theme, onToggleTheme, isMuted, setIsMu
         </footer>
 
       </main>
-
-      {/* Floating AI Oracle Fab */}
-      <button className="mobile-ai-fab" onClick={onOpenAI} title="Ask AI Companion">
-        <MessageSquare size={20} />
-        <span>Ask AI</span>
-      </button>
     </div>
   );
 }

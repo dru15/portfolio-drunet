@@ -2031,20 +2031,55 @@ h1, h2, h3, h4 { font-family: 'Outfit', 'Sora', sans-serif; }
    NEW DEDICATED MOBILE PORTFOLIO STYLES (≤768px)
    ============================================================ */
 @media (max-width: 768px) {
-  /* Hide desktop UI layer on mobile */
+  /* Hide desktop UI elements on mobile */
   .ui-layer,
   .hud-nav-container,
   .hud-sidebar,
-  .mobile-bottom-nav,
-  .jedi-fab {
+  .mobile-bottom-nav {
     display: none !important;
+  }
+
+  /* Show Jedi Hand Control Button on mobile */
+  .jedi-fab {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    left: 16px !important;
+    z-index: 1000 !important;
+    height: 42px !important;
+    border-radius: 21px !important;
+    padding: 0 14px !important;
+    font-size: 0.72rem !important;
+    background: rgba(10, 12, 25, 0.88) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid var(--border-bright) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 255, 136, 0.15) !important;
+  }
+
+  /* Single AI Oracle Button on mobile */
+  .oracle-fab {
+    display: flex !important;
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 16px !important;
+    z-index: 1000 !important;
+    box-shadow: 0 8px 24px rgba(108, 99, 255, 0.4) !important;
+  }
+
+  .oracle-panel {
+    width: calc(100vw - 1.5rem) !important;
+    right: 0.75rem !important;
+    bottom: 4.8rem !important;
+    max-height: 60vh !important;
+    z-index: 999 !important;
   }
 
   .mobile-app-root {
     position: relative;
     z-index: 50;
     min-height: 100vh;
-    padding-top: 56px;
+    padding-top: 118px; /* Offset for 56px header + 48px sticky category bar */
     padding-bottom: 90px;
     background: var(--bg);
     color: var(--text);
@@ -2161,6 +2196,7 @@ h1, h2, h3, h4 { font-family: 'Outfit', 'Sora', sans-serif; }
   }
 
   .mobile-card {
+    scroll-margin-top: 118px;
     background: var(--panel-bg-solid);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
