@@ -338,7 +338,7 @@ export default function ResumeContent({ activeSection, onNavigate }) {
                   </h3>
                   <h4 className="exp-company">{exp.company}</h4>
                   <ul className="exp-bullets">
-                    {exp.bullets.slice(0, 2).map((b, bi) => (
+                    {exp.bullets.map((b, bi) => (
                       <li key={bi}>{b}</li>
                     ))}
                   </ul>
