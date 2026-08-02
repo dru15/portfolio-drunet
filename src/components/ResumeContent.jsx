@@ -86,6 +86,7 @@ function SectionPanel({ id, activeSection, panelClass, children }) {
   const isActive = activeSection === id;
   return (
     <div
+      data-section-id={id}
       className={`section-panel ${panelClass} ${isActive ? 'visible' : ''}`}
       aria-hidden={!isActive}
     >
@@ -94,10 +95,43 @@ function SectionPanel({ id, activeSection, panelClass, children }) {
   );
 }
 
-export default function ResumeContent({ activeSection, onNavigate }) {
+export default function ResumeContent({ activeSection, onNavigate, onMobileActiveChange }) {
   const [formState, setFormState] = useState({ name: '', email: '', message: '' });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [transmitting, setTransmitting] = useState(false);
+
+  // ── Mobile IntersectionObserver ──────────────────────────────────────
+  // On mobile, all sections are rendered in a snap-scroll column.
+  // The observer watches which section enters the viewport and:
+  //  1. adds `.in-view` class  → triggers CSS reveal animation
+  //  2. calls onMobileActiveChange → keeps nav dots in sync
+  useEffect(() => {
+    const isMobile = () => window.innerWidth <= 600;
+    if (!isMobile()) return;
+
+    const sections = document.querySelectorAll('[data-section-id]');
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const id = entry.target.dataset.sectionId;
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            if (entry.intersectionRatio >= 0.45) {
+              onMobileActiveChange?.(id);
+            }
+          } else {
+            // Re-trigger animation when scrolling back
+            entry.target.classList.remove('in-view');
+          }
+        });
+      },
+      { threshold: [0.1, 0.45, 0.9] }
+    );
+
+    sections.forEach((s) => observer.observe(s));
+    return () => observer.disconnect();
+  }, [onMobileActiveChange]);
 
   const handleClick = () => playSound('click');
 

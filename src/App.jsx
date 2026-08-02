@@ -51,6 +51,14 @@ export default function App() {
   const [aiOpen, setAiOpen] = useState(false);
   const transitioningRef = useRef(false);
   const touchStartRef = useRef(null);
+  const isMobileRef = useRef(window.innerWidth <= 600);
+
+  // Track mobile breakpoint
+  useEffect(() => {
+    const check = () => { isMobileRef.current = window.innerWidth <= 600; };
+    window.addEventListener('resize', check, { passive: true });
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const [theme, setTheme] = useState(getInitialTheme);
 
@@ -134,8 +142,16 @@ export default function App() {
   }, [activeSection]);
 
   const navigateToSection = useCallback((sectionId) => {
-    if (transitioningRef.current || sectionId === activeSectionRef.current) return;
     if (!SECTION_IDS.includes(sectionId)) return;
+
+    // On mobile: programmatic scroll, IntersectionObserver updates state
+    if (isMobileRef.current) {
+      const el = document.querySelector(`[data-section-id="${sectionId}"]`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+
+    if (transitioningRef.current || sectionId === activeSectionRef.current) return;
     transitioningRef.current = true;
     setIsTransitioning(true);
     playSound('transition');
@@ -167,6 +183,7 @@ export default function App() {
     let accumulated = 0;
     const THRESHOLD = 80;
     const handleWheel = (e) => {
+      if (isMobileRef.current) return; // mobile uses native scroll snap
       if (e.target.closest('.terminal-bar, .form-input, .form-textarea, .terminal-input, .cipher-messages, .cipher-input')) return;
       e.preventDefault();
       if (transitioningRef.current || isRippling) return;
@@ -180,6 +197,7 @@ export default function App() {
 
   useEffect(() => {
     const handleKeyDown = (e) => {
+      if (isMobileRef.current) return; // mobile uses native scroll snap
       if (e.target.closest('.terminal-bar, .form-input, .form-textarea, .terminal-input, .cipher-input')) return;
       if (isRippling) return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); goNext(); }
@@ -189,12 +207,14 @@ export default function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [goNext, goPrev, isRippling]);
 
+  // Touch swipe only on desktop (mobile uses CSS scroll snap)
   useEffect(() => {
     const handleTouchStart = (e) => {
+      if (isMobileRef.current) return;
       touchStartRef.current = { y: e.touches[0].clientY, x: e.touches[0].clientX };
     };
     const handleTouchEnd = (e) => {
-      if (!touchStartRef.current || isRippling) return;
+      if (isMobileRef.current || !touchStartRef.current || isRippling) return;
       const dy = touchStartRef.current.y - e.changedTouches[0].clientY;
       const dx = touchStartRef.current.x - e.changedTouches[0].clientX;
       if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 50) {
@@ -237,6 +257,7 @@ export default function App() {
           activeSection={activeSection}
           isTransitioning={isTransitioning}
           onNavigate={navigateToSection}
+          onMobileActiveChange={setActiveSection}
         />
         <Navigation
           activeSection={activeSection}
