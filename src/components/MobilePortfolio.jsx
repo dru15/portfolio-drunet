@@ -13,8 +13,8 @@ const RESUME = {
   location: 'Chennai, Tamil Nadu',
   email: 'dhruv150326@gmail.com',
   phone: '(+91) 9650235636',
-  linkedin: 'https://linkedin.com/in/dhruv-agnihotri',
-  github: 'https://github.com/dhruv150326',
+  linkedin: 'https://www.linkedin.com/in/dhruv-agnihotri-37965731b/',
+  github: 'https://github.com/dru15',
 
   stats: [
     { label: 'CGPA', val: '8.74 / 10' },
