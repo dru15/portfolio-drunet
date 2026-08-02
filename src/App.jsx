@@ -143,14 +143,6 @@ export default function App() {
 
   const navigateToSection = useCallback((sectionId) => {
     if (!SECTION_IDS.includes(sectionId)) return;
-
-    // On mobile: programmatic scroll, IntersectionObserver updates state
-    if (isMobileRef.current) {
-      const el = document.querySelector(`[data-section-id="${sectionId}"]`);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      return;
-    }
-
     if (transitioningRef.current || sectionId === activeSectionRef.current) return;
     transitioningRef.current = true;
     setIsTransitioning(true);
@@ -257,7 +249,6 @@ export default function App() {
           activeSection={activeSection}
           isTransitioning={isTransitioning}
           onNavigate={navigateToSection}
-          onMobileActiveChange={setActiveSection}
         />
         <Navigation
           activeSection={activeSection}

@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Volume2, VolumeX, Sun, Moon } from 'lucide-react';
+import { Volume2, VolumeX, Sun, Moon, Home, User, Cpu, Briefcase, FileText, Mail } from 'lucide-react';
 import { playSound, toggleMute } from '../utils/audio';
 
 const SECTION_LABELS = {
@@ -10,6 +10,15 @@ const SECTION_LABELS = {
   experience: 'FIELD RECORD',
   contact:    'UPLINK',
 };
+
+const MOBILE_NAV_ITEMS = [
+  { id: 'home', label: 'Home', icon: Home },
+  { id: 'about', label: 'About', icon: User },
+  { id: 'skills', label: 'Skills', icon: Cpu },
+  { id: 'projects', label: 'Projects', icon: Briefcase },
+  { id: 'experience', label: 'Exp', icon: FileText },
+  { id: 'contact', label: 'Contact', icon: Mail },
+];
 
 export default function Navigation({
   activeSection,
@@ -43,7 +52,6 @@ export default function Navigation({
     if (themeButtonRef.current) {
       const rect = themeButtonRef.current.getBoundingClientRect();
       const cx = Math.round(rect.left + rect.width / 2);
-      // Use the center for the ripple origin, but toast will use bottom
       const cy = Math.round(rect.top + rect.height / 2);
       onToggleTheme(cx, cy, rect.bottom);
     } else {
@@ -95,6 +103,7 @@ export default function Navigation({
         </div>
       </div>
 
+      {/* Desktop Sidebar Dots */}
       <div className="hud-sidebar hud-sidebar-right">
         {sections.map((sec) => (
           <div
@@ -108,6 +117,25 @@ export default function Navigation({
           </div>
         ))}
       </div>
+
+      {/* Mobile Glass Bottom Navigation Dock */}
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+        {MOBILE_NAV_ITEMS.map((item) => {
+          const Icon = item.icon;
+          const isActive = activeSection === item.id;
+          return (
+            <button
+              key={item.id}
+              className={`mobile-nav-item ${isActive ? 'active' : ''}`}
+              onClick={() => handleNavClick(item.id)}
+              aria-label={item.label}
+            >
+              <Icon size={18} />
+              <span className="mobile-nav-label">{item.label}</span>
+            </button>
+          );
+        })}
+      </nav>
     </>
   );
 }

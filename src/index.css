@@ -1723,188 +1723,219 @@ h1, h2, h3, h4 { font-family: 'Outfit', 'Sora', sans-serif; }
 
 /* ============================================================
    RESPONSIVE — MOBILE (≤600px)
-   Snap-scroll redesign: aurora bg + glass reveal animations
+   Ultra-Sleek Single Card View + Mobile Glass Bottom Navigation Dock
    ============================================================ */
 @media (max-width: 600px) {
 
-  /* ── Base ──────────────────────────────────────────────── */
+  /* ── Base ───────── */
   body { font-size: 14px; overflow: hidden; }
 
-  /* ── Aurora animated gradient orbs (replaces 3D robot) ─── */
   .app-container {
     background: var(--bg);
     overflow: hidden;
+    position: relative;
   }
+
+  /* ── Ambient Aurora Glows (Floating background) ──────── */
   .app-container::before,
   .app-container::after {
     content: '';
     position: fixed;
     border-radius: 50%;
     pointer-events: none;
-    filter: blur(55px);
+    filter: blur(60px);
     z-index: 1;
   }
   .app-container::before {
-    width: 75vw; height: 75vw;
-    background: radial-gradient(circle,
-      rgba(0,255,136,0.14) 0%,
-      rgba(108,99,255,0.07) 50%,
-      transparent 75%);
-    top: -25vw; right: -20vw;
-    animation: mobileAurora1 11s ease-in-out infinite;
+    width: 80vw; height: 80vw;
+    background: radial-gradient(circle, rgba(0,255,136,0.15) 0%, rgba(108,99,255,0.08) 50%, transparent 75%);
+    top: -20vw; right: -20vw;
+    animation: mobileAurora1 12s ease-in-out infinite;
   }
   .app-container::after {
-    width: 65vw; height: 65vw;
-    background: radial-gradient(circle,
-      rgba(108,99,255,0.13) 0%,
-      rgba(0,212,255,0.06) 50%,
-      transparent 75%);
-    bottom: -20vw; left: -18vw;
-    animation: mobileAurora2 14s ease-in-out infinite;
+    width: 70vw; height: 70vw;
+    background: radial-gradient(circle, rgba(108,99,255,0.14) 0%, rgba(0,212,255,0.07) 50%, transparent 75%);
+    bottom: -15vw; left: -15vw;
+    animation: mobileAurora2 15s ease-in-out infinite;
   }
 
   @keyframes mobileAurora1 {
     0%,100% { transform: scale(1.0) translate(0,0); }
-    30%      { transform: scale(1.18) translate(-6vw, 8vw); }
-    65%      { transform: scale(0.88) translate(8vw, -4vw); }
+    50%      { transform: scale(1.15) translate(-8vw, 8vw); }
   }
   @keyframes mobileAurora2 {
     0%,100% { transform: scale(1.0) translate(0,0); }
-    35%      { transform: scale(1.12) translate(5vw, -7vw); }
-    70%      { transform: scale(0.92) translate(-6vw, 5vw); }
+    50%      { transform: scale(1.15) translate(8vw, -8vw); }
   }
 
-  /* ── Hide desktop-only elements ────────────────────────── */
-  .cinematic-canvas  { display: none; }
-  .dot-grid-bg       { opacity: 0.07; }
+  /* Hide 3D Canvas on mobile for maximum battery/speed & zero overlap */
+  .cinematic-canvas  { display: none !important; }
+  .dot-grid-bg       { opacity: 0.08; }
   .scroll-indicator  { display: none; }
   .hud-sidebar-right { display: none; }
 
-  /* ── Snap-scroll container ─────────────────────────────── */
+  /* ── Section UI Container: Fixed, No Outer Page Scroll ── */
   .section-ui {
     position: fixed !important;
     inset: 0 !important;
     z-index: 20;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    scroll-snap-type: y mandatory;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none;
-    scrollbar-width: none;
-    pointer-events: auto;
-  }
-  .section-ui::-webkit-scrollbar { display: none; }
-
-  /* ── Each section = one full snap page ────────────────── */
-  .section-panel {
-    position: relative !important;
-    top: unset !important; left: unset !important;
-    right: unset !important; bottom: unset !important;
-    transform: none !important;
-    width: 100vw !important;
-    max-width: 100vw !important;
-    height: 100dvh !important;
-    min-height: 100dvh !important;
-    max-height: 100dvh !important;
     display: flex !important;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 5.25rem 1rem 5rem !important;
-    box-sizing: border-box;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 60px 14px 80px !important;
+    overflow: hidden !important;
+    pointer-events: none;
+  }
+
+  /* ── Single Section Panel (Centered Card) ─────────────── */
+  .section-panel {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -46%) scale(0.94) !important;
+    width: calc(100vw - 28px) !important;
+    max-width: 480px !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: opacity 0.35s ease, transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease !important;
+    max-height: calc(100vh - 145px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+  }
+
+  .section-panel.visible {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
-    overflow: hidden;
-    transition: none !important;
+    transform: translate(-50%, -50%) scale(1) !important;
+    z-index: 25 !important;
   }
 
-  /* ── Glass cards: animate in when .in-view added ──────── */
+  /* ── Card Interior Scroll (When content is long) ──────── */
   .section-panel > .liquid-glass,
   .section-panel > .contact-glass,
   .section-panel > .hero-glass,
   .section-panel > .glass-panel {
-    opacity: 0;
-    transform: translateY(28px) scale(0.97);
-    transition:
-      opacity  0.55s cubic-bezier(0.16,1,0.3,1),
-      transform 0.55s cubic-bezier(0.16,1,0.3,1);
-    width: 100%;
-    max-height: calc(100dvh - 9.5rem);
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(0,255,136,0.18) transparent;
+    width: 100% !important;
+    max-height: calc(100vh - 145px) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    scrollbar-width: none !important; /* Hide scrollbar for ultra clean look */
+    -webkit-overflow-scrolling: touch !important;
+    border-radius: 18px !important;
+    padding: 1.35rem 1.25rem !important;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 255, 136, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    background: var(--panel-bg-solid) !important;
+    backdrop-filter: blur(28px) !important;
+    -webkit-backdrop-filter: blur(28px) !important;
   }
-  .section-panel.in-view > .liquid-glass,
-  .section-panel.in-view > .contact-glass,
-  .section-panel.in-view > .hero-glass,
-  .section-panel.in-view > .glass-panel {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  /* Accent left glow strip on active section */
-  .section-panel.in-view::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 22%; bottom: 22%;
-    width: 2px;
-    background: linear-gradient(to bottom,
-      transparent, var(--accent) 40%, var(--accent-2) 60%, transparent);
-    border-radius: 2px;
-    opacity: 0;
-    animation: mobileAccentLine 0.5s cubic-bezier(0.16,1,0.3,1) 0.15s forwards;
-  }
-  @keyframes mobileAccentLine {
-    from { opacity: 0; transform: scaleY(0.2); }
-    to   { opacity: 0.55; transform: scaleY(1); }
+  .section-panel > .liquid-glass::-webkit-scrollbar,
+  .section-panel > .contact-glass::-webkit-scrollbar,
+  .section-panel > .hero-glass::-webkit-scrollbar,
+  .section-panel > .glass-panel::-webkit-scrollbar {
+    display: none;
   }
 
-  /* ── Navigation bar ────────────────────────────────────── */
+  /* ── Mobile Top Header ────────────────────────────────── */
   .hud-nav-container {
-    left: 0.65rem;
-    right: 0.65rem;
-    top: 0.65rem;
-    background: rgba(10,12,25,0.88);
+    left: 0.75rem;
+    right: 0.75rem;
+    top: 0.75rem;
+    background: rgba(10, 12, 25, 0.82);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 0.35rem 0.7rem;
-    gap: 0.35rem;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 0.35rem 0.75rem;
+    gap: 0.5rem;
     justify-content: space-between;
   }
+
   .hud-brand {
-    font-size: 0.75rem;
-    padding: 5px 10px;
+    font-size: 0.76rem;
+    padding: 5px 8px;
     background: transparent;
     border: none;
     backdrop-filter: none;
-    -webkit-backdrop-filter: none;
   }
-  .hud-section-display { display: none; }
-  .hud-nav-right { gap: 0.3rem; }
-  .hud-icon-btn  { width: 32px !important; height: 32px !important; }
 
-  /* ── Hero ──────────────────────────────────────────────── */
-  .hero-glass  { padding: 1.75rem 1.5rem !important; border-radius: 16px !important; }
-  .hero-badge  { margin-bottom: 0.75rem; font-size: 0.65rem !important; }
-  .hero-title  {
-    font-size: clamp(2.5rem,13vw,3.8rem) !important;
-    line-height: 1.01 !important;
-    letter-spacing: -0.02em !important;
+  .hud-section-display { display: none; }
+  .hud-nav-right { gap: 0.35rem; }
+  .hud-icon-btn { width: 34px !important; height: 34px !important; }
+
+  /* ── Mobile Glass Bottom Navigation Dock ──────────────── */
+  .mobile-bottom-nav {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100vw - 24px);
+    max-width: 440px;
+    height: 56px;
+    background: rgba(10, 12, 25, 0.88);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 28px;
+    display: flex !important;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 4px;
+    z-index: 1000;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.65), 0 0 20px rgba(0, 255, 136, 0.1);
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 5px 9px;
+    border-radius: 18px;
+    color: var(--text-2);
+    transition: all 0.25s var(--ease-smooth);
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    flex: 1;
+    max-width: 65px;
+  }
+
+  .mobile-nav-item.active {
+    color: var(--vision-green);
+    background: rgba(0, 255, 136, 0.12);
+    border-color: rgba(0, 255, 136, 0.35);
+    box-shadow: 0 0 12px rgba(0, 255, 136, 0.2);
+  }
+
+  .mobile-nav-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  /* Hide mobile dock on desktop (>600px) */
+  @media (min-width: 601px) {
+    .mobile-bottom-nav { display: none !important; }
+  }
+
+  /* ── Hero Customization ────────────────────────────────── */
+  .hero-title {
+    font-size: clamp(2.4rem, 12vw, 3.5rem) !important;
+    line-height: 1.02 !important;
   }
   .hero-surname {
-    font-size: clamp(2.1rem,11vw,3.2rem) !important;
-    letter-spacing: -0.02em !important;
+    font-size: clamp(2rem, 10vw, 3rem) !important;
   }
   .hero-tagline {
-    font-size: 0.8rem !important;
-    line-height: 1.65 !important;
-    margin: 0.8rem 0 1.1rem !important;
+    font-size: 0.82rem !important;
+    line-height: 1.6 !important;
+    margin: 0.75rem 0 1.1rem !important;
   }
   .hero-actions {
     flex-direction: column !important;
@@ -1913,28 +1944,31 @@ h1, h2, h3, h4 { font-family: 'Outfit', 'Sora', sans-serif; }
   }
   .hero-actions .cyber-button { width: 100%; justify-content: center; }
 
-  /* ── Glass card sizing ─────────────────────────────────── */
-  .liquid-glass  { padding: 1.2rem !important; border-radius: 14px !important; }
-  .contact-glass { padding: 0 !important;      border-radius: 14px !important; }
-  .glass-panel   { padding: 1.2rem !important; border-radius: 14px !important; }
-
-  /* ── Dossier ───────────────────────────────────────────── */
-  .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 0.4rem 0.7rem !important; }
-  .stat-value { font-size: 1.5rem !important; }
+  /* ── Dossier stats ─────────────────────────────────────── */
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.4rem 0.7rem !important;
+  }
+  .stat-value { font-size: 1.45rem !important; }
   .stat-label { font-size: 0.6rem !important; }
 
   /* ── Skills matrix ─────────────────────────────────────── */
-  .skills-grid  { grid-template-columns: 1fr 1fr !important; gap: 0.4rem !important; }
-  .matrix-panel { padding: 0.9rem !important; }
-  .skill-item   { font-size: 0.7rem !important; padding: 0.4rem 0.6rem !important; }
+  .skills-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.4rem !important;
+  }
+  .matrix-panel { padding: 0.85rem !important; }
+  .skill-item { font-size: 0.7rem !important; padding: 0.4rem 0.6rem !important; }
 
   /* ── Experience timeline ───────────────────────────────── */
   .timeline-horizontal {
     flex-direction: column !important;
-    border-top: none; padding-top: 0;
+    border-top: none;
+    padding-top: 0;
     border-left: 1px solid var(--border);
     padding-left: 1.25rem;
-    gap: 1.1rem; margin-top: 0.5rem;
+    gap: 1rem;
+    margin-top: 0.5rem;
   }
   .timeline-h-item .timeline-node { left: -1.62rem; top: 0.2rem; }
   .timeline-date { font-size: 0.58rem !important; }
@@ -1943,51 +1977,45 @@ h1, h2, h3, h4 { font-family: 'Outfit', 'Sora', sans-serif; }
   .ops-card { opacity: 1 !important; transform: none !important; }
 
   /* ── Contact ───────────────────────────────────────────── */
-  .contact-two-col     { flex-direction: column !important; }
-  .contact-col-info    {
+  .contact-two-col { flex-direction: column !important; }
+  .contact-col-info {
     flex: unset !important;
-    padding: 1.2rem 1.2rem 0.75rem !important;
+    padding: 1.1rem 1.1rem 0.75rem !important;
     border-bottom: 1px solid var(--border);
   }
   .contact-col-divider { display: none; }
-  .contact-col-form    { padding: 0.9rem 1.2rem 1.2rem !important; }
-  .form-textarea       { min-height: 70px; }
+  .contact-col-form { padding: 0.85rem 1.1rem 1.1rem !important; }
+  .form-textarea { min-height: 70px; }
 
   /* ── Bottom FABs ───────────────────────────────────────── */
-  .jedi-fab       { bottom: 1rem; left: 1rem; height: 40px; padding: 0 12px; z-index: 30; }
+  .jedi-fab { bottom: 4.8rem; left: 1rem; height: 38px; padding: 0 10px; z-index: 30; }
   .jedi-fab-label { display: none; }
-  .oracle-fab     { bottom: 1rem; right: 1rem; z-index: 30; }
+  .oracle-fab { bottom: 4.8rem; right: 1rem; z-index: 30; }
   .oracle-panel {
     width: calc(100vw - 1.5rem) !important;
     right: 0.75rem !important;
-    bottom: 4.75rem !important;
-    max-height: 60vh;
+    bottom: 8.5rem !important;
+    max-height: 55vh;
     z-index: 29;
   }
 
   /* ── Typography ────────────────────────────────────────── */
-  .panel-heading    { font-size: 1.3rem !important; }
-  .panel-subhead    { font-size: 0.7rem !important; }
-  .panel-body       { font-size: 0.8rem !important;  line-height: 1.6 !important; }
-  .exp-role         { font-size: 0.87rem !important; }
-  .exp-company      { font-size: 0.73rem !important; }
-  .exp-bullets li   { font-size: 0.73rem !important; line-height: 1.55 !important; }
-  .proj-desc        { font-size: 0.76rem !important; }
-  .tag-skill        { font-size: 0.58rem !important; padding: 2px 7px !important; }
+  .panel-heading { font-size: 1.3rem !important; }
+  .panel-subhead { font-size: 0.7rem !important; }
+  .panel-body { font-size: 0.8rem !important; line-height: 1.6 !important; }
+  .exp-role { font-size: 0.87rem !important; }
+  .exp-company { font-size: 0.73rem !important; }
+  .exp-bullets li { font-size: 0.73rem !important; line-height: 1.55 !important; }
+  .proj-desc { font-size: 0.76rem !important; }
+  .tag-skill { font-size: 0.58rem !important; padding: 2px 7px !important; }
   .contact-info-row { font-size: 0.79rem !important; }
 
   /* ── Light mode aurora tints ───────────────────────────── */
   .app-container.light-mode::before {
-    background: radial-gradient(circle,
-      rgba(0,122,82,0.11) 0%,
-      rgba(80,70,160,0.05) 50%,
-      transparent 75%);
+    background: radial-gradient(circle, rgba(0,122,82,0.11) 0%, rgba(80,70,160,0.05) 50%, transparent 75%);
   }
   .app-container.light-mode::after {
-    background: radial-gradient(circle,
-      rgba(80,70,160,0.09) 0%,
-      rgba(0,102,153,0.05) 50%,
-      transparent 75%);
+    background: radial-gradient(circle, rgba(80,70,160,0.09) 0%, rgba(0,102,153,0.05) 50%, transparent 75%);
   }
 }
 .backlight-layer {
